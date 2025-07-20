@@ -3,10 +3,11 @@ package org.example;
 public class Monster implements Attackable {
     private String name = "";
     private Stats stats;
-
-    public Monster(String name, int hp, int attackPower) {
+    private int exp;
+    public Monster(String name, int hp, int attackPower, int i) {
         this.name = name;
         this.stats = new Stats(hp, attackPower, 0); // 몬스터한테 운 필요없음
+        this.exp = exp;
     }
 
     public Monster() {
@@ -23,6 +24,9 @@ public class Monster implements Attackable {
         return stats;
     }
 // 외부에서 이름과 스탯을 확인할 수 있음
+public int getExp() {
+    return this.exp; // 또는 다른 변수명에 맞춰 수정
+}
     @Override
     public int getHp() {
         return stats.getHp();

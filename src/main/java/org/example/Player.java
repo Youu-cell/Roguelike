@@ -1,14 +1,18 @@
 package org.example;
 import items.Item;
+import org.example.Inventory;
 
 public class Player implements Attackable {
     private final String name;
     private final Stats stats;
+    private final Inventory inventory;
     private int level;
     private int exp;
     private boolean itemUsedThisTurn;
     // 아이템 사용 여부 판단
-
+    public int getLevel() {
+        return level;
+    }
     public Player(String name) {
         this.name = name;
         this.level = 1;
@@ -16,8 +20,14 @@ public class Player implements Attackable {
         this.stats = new Stats(20, 1, 0);
         // 초기 HP 20, 공격력 1, 럭 0
         this.itemUsedThisTurn = false;
+        this.inventory = new Inventory();
     }
-
+    public Inventory getInventory(){
+        return inventory;
+    }
+    public boolean hasUsedItemThisTurn() {
+        return itemUsedThisTurn;
+    }
     public String getName() {
         return name;
     }

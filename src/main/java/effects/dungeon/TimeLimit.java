@@ -3,9 +3,16 @@ package effects.dungeon;
 import org.example.Player;
 import org.example.Monster;
 
-public class TimeLimit implements DungeonEffect {
-    private final int turnLimit = 5;
 
+public class TimeLimit implements DungeonEffect {
+    private final int turnLimit;
+
+    public TimeLimit(int floor) {
+        // 층수 기반으로 턴 제한 설정
+        int calculated = 7 - floor / 2;
+        if (calculated < 3) this.turnLimit = 3;
+        else this.turnLimit = calculated;
+    }
     @Override
     public String getName() {
         return "시간제한 던전";

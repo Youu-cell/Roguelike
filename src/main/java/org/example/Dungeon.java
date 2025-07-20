@@ -1,52 +1,49 @@
 package org.example;
 
+import effects.dungeon.*;
+import org.example.Monster;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Random;
-import effects.dungeon.DungeonEffect;
-import effects.dungeon.Burning;
-import effects.dungeon.Darkness;
-import effects.dungeon.Healing;
-import effects.dungeon.LowGravity;
-import effects.dungeon.TimeLimit;
 
 public class Dungeon {
-    private int floor;
-    private DungeonEffect effect;
-    private Monster monster;
-    private ItemRoom itemRoom;
+    private final List<Room> rooms = new ArrayList<>();
+    private int currentFloor = 1;
 
-    public Dungeon(int floor){
-        this.floor = floor;
-        this.effect = getRandomEffect();
-        this.monster = new Monster();
-        this.itemRoom = new ItemRoom();
+    public Dungeon(int totalFloors) {
+        for (int i = 1; i <= totalFloors; i++) {
+            DungeonEffect effect = getRandomEffect(i);
+            Room room;
 
+            if (new Random().nextBoolean()) {
+                Monster monster = new Monster("몬스터 Lv." + i, 10 + i * 2, 1 + i, 5 + i * 2);
+                room = new MonsterRoom(monster, effect);
+            } else {
+                room = new ItemRoom(i, effect);
+            }
+
+            rooms.add(room);
+        }
     }
 
-    public void enter(Player player) {
-        System.out.println(floor+"층 던전에 입장합니다");
-        System.out.println(""+effect.getName());
-        effect.onEnter(player); // 던전 효과 적용
+    public Room getNextRoom() {
+        return rooms.get(currentFloor - 1);
     }
 
-    public DungeonEffect getEffect() {
-        return effect;
+    public void moveToNextFloor() {
+        currentFloor++;
     }
 
-    public Monster getMonster() {
-        return monster;
+    public int getCurrentFloor() {
+        return currentFloor;
     }
 
-    public ItemRoom getItemRoom() {
-        return itemRoom;
+    public boolean hasNextRoom() {
+        return currentFloor <= rooms.size();
     }
 
-    public int getFloor() {
-        return floor;
-    }
-
-    //  던전 효과를 랜덤으로 선택
-    private DungeonEffect getRandomEffect() {
+    private DungeonEffect getRandomEffect(int floor) {
         DungeonEffect[] effects = {
                 new Burning(floor),
                 new Darkness(),
@@ -54,11 +51,9 @@ public class Dungeon {
                 new LowGravity(),
                 new TimeLimit(floor)
         };
-        Random random = new Random();
-        return effects[random.nextInt(effects.length)];
+        return effects[new Random().nextInt(effects.length)];
     }
-
-    }
+}
 
 
 
